@@ -11,15 +11,14 @@ var config = {
     // where compiled code goes
     output: { 
         path: path.join(__dirname, "build"), 
-        filename: "index.bundle.js"
+        filename: "index.[contenthash].bundle.js",
+        clean: true,
     },
     // for deciding between development or production builds (passed as --mode production in webpack cli)
     mode: process.env.NODE_ENV || "development",
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
     },
-    // tells dev server that it needs to serve everythhing from the src folder
-    devServer: { static: path.join(__dirname, "src") },
     module: {
         // Note: rules run from bottom to top, because... reasons.
         rules: [
@@ -52,6 +51,10 @@ var config = {
 module.exports = (env, argv) => {
     // development specific build options
     if (argv.mode === "development") {
+        // adding recommended source mapping to dev build
+        config.devtool = 'inline-source-map';
+        // tells dev server that it needs to serve everything from the src folder
+        config.devServer = { static: path.join(__dirname, "src") };
         // watch for changes in dev build to trigger a re-build
         config.watch = true;
         config.watchOptions = {
@@ -63,12 +66,13 @@ module.exports = (env, argv) => {
          */
         config.performance = {
             hints: 'error',
-            maxAssetSize: 1400000,
-            maxEntrypointSize: 1400000,
+            maxAssetSize: 3500000,
+            maxEntrypointSize: 3500000,
         }
     }
     // production specific build options
     if (argv.mode === "production") {
+        config.devtool = 'source-map';
         /**
          * test all files to make sure they're not over the max size set
          * this isn't a hard limit, but it's here so that we know when the bundle grows and can analyse what happened and if we're okay with the increase
