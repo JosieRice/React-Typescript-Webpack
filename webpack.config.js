@@ -55,11 +55,6 @@ module.exports = (env, argv) => {
         config.devtool = 'inline-source-map';
         // tells dev server that it needs to serve everything from the src folder
         config.devServer = { static: path.join(__dirname, "src") };
-        // watch for changes in dev build to trigger a re-build
-        config.watch = true;
-        config.watchOptions = {
-            ignored: ['**/node_modules', '**/build']
-        }
         /**
          * test all files to make sure they're not over the max size set
          * this isn't a hard limit, but it's here so that we know when the bundle grows and can analyse what happened and if we're okay with the increase
