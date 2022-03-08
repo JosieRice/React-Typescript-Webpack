@@ -23,7 +23,7 @@ var config = {
     module: {
         // Note: rules run from bottom to top, because... reasons.
         rules: [
-            // run js and jsx files through babel as defined in .babelrc (might not need if we don't have any js files)
+            // run js and jsx files through babel as defined in .babelrc
             { 
                 test: /\.(js|jsx)$/, 
                 exclude: /node_modules/, 

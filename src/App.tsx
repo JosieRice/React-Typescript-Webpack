@@ -1,10 +1,9 @@
-
 import ReactDOM from 'react-dom';
 
-const HelloWorld = () => { 
+const HelloWorld = () => {
     return (
         <h1>
-            Hello World of Typescript
+            Hello World of React Typescript
         </h1>
     );
 }
