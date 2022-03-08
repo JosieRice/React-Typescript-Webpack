@@ -5,8 +5,11 @@ module.exports = {
     // where to start compiling code
     entry: path.join(__dirname, "src", "App.tsx"),
     // where compiled code goes
-    output: { path: path.join(__dirname, "build"), filename: "index.bundle.js" },
-    // for deciding between development or production builds
+    output: { 
+        path: path.join(__dirname, "build"), 
+        filename: "index.bundle.js"
+    },
+    // for deciding between development or production builds (passed as --mode production in webpack cli)
     mode: process.env.NODE_ENV || "development",
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
