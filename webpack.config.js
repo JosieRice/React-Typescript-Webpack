@@ -1,7 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+// uncomment and run a build to get an analysis of your bundles :)
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports = {
+// common build options
+var config = {
     // where to start compiling code
     entry: path.join(__dirname, "src", "App.tsx"),
     // where compiled code goes
@@ -34,9 +38,47 @@ module.exports = {
         ],
     },
     plugins: [
+        // inject index.bundle.js into index.html file
         new HtmlWebpackPlugin({
-            // inject index.bundle.js into index.html file
             template: path.join(__dirname, "src", "index.html"),
         }),
+        // move typescript type check until after build (will get important quickly as codebase grows)
+        new ForkTsCheckerWebpackPlugin(),
+        // uncomment and run a build to get an analysis of your bundles :)
+        // new BundleAnalyzerPlugin(),
     ],
 };
+
+module.exports = (env, argv) => {
+    // development specific build options
+    if (argv.mode === "development") {
+        // watch for changes in dev build to trigger a re-build
+        config.watch = true;
+        config.watchOptions = {
+            ignored: ['**/node_modules', '**/build']
+        }
+        /**
+         * test all files to make sure they're not over the max size set
+         * this isn't a hard limit, but it's here so that we know when the bundle grows and can analyse what happened and if we're okay with the increase
+         */
+        config.performance = {
+            hints: 'error',
+            maxAssetSize: 1400000,
+            maxEntrypointSize: 1400000,
+        }
+    }
+    // production specific build options
+    if (argv.mode === "production") {
+        /**
+         * test all files to make sure they're not over the max size set
+         * this isn't a hard limit, but it's here so that we know when the bundle grows and can analyse what happened and if we're okay with the increase
+         */
+        config.performance = {
+            hints: 'error',
+            maxAssetSize: 140000,
+            maxEntrypointSize: 140000,
+        }
+    }
+
+    return config;
+}
