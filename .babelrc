@@ -1,8 +1,10 @@
 {
     "presets": [
-        // for compiling modern js to older browsers (as defined in our browser support matrix)
+        // compiling modern js to older browsers (as defined in our browser support matrix)
         "@babel/env",
-        // for compiling react to ES5
-        "@babel/react"
+        // compiling react to ES5
+        "@babel/react",
+        // compiling typescript to javascript
+        "@babel/preset-typescript"
     ]
 }

@@ -1,10 +1,10 @@
-import React from 'react';
+
 import ReactDOM from 'react-dom';
 
-const HelloWorld = () => {
+const HelloWorld = () => { 
     return (
         <h1>
-            Hello World
+            Hello World of Typescript
         </h1>
     );
 }
