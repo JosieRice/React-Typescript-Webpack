@@ -1,11 +1,28 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
 /** uncomment and run a build to get an analysis of your bundles :) */
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+/** create styled components transformer */
+const styledComponentsTransformer = createStyledComponentsTransformer();
+
+var babelOptions = {
+    presets: [
+        /** compiling modern js to older browsers (as defined in our browser support matrix) */
+        '@babel/env',
+        /** compiling react to ES5 */
+        '@babel/react',
+        /** compiling typescript to javascript */
+        '@babel/preset-typescript',
+    ],
+    /** improves minification of styled-components code */
+    plugins: ['babel-plugin-styled-components'],
+};
+
 /** common build options */
-var config = {
+const config = {
     /** where to start/entry point for compiling code */
     entry: path.join(__dirname, 'src', 'index.tsx'),
     /** where compiled code goes */
@@ -36,18 +53,25 @@ var config = {
     module: {
         /** Note: rules run from bottom to top, because... reasons. */
         rules: [
-            /** run js and jsx files through babel as defined in .babelrc */
-            // Chloë: I'm not convinced this is necessary
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: ['babel-loader'],
-            },
-            /** run ts and tsx files through ts-loader */
+            /** run ts and tsx files through ts-loader and babel-loader to compile code */
             {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
-                use: ['ts-loader'],
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: babelOptions,
+                    },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            /** improves build time by turning off type checking because we moved it to after each build */
+                            transpileOnly: true,
+                            /** adds name of styled component to className for better debugging */
+                            getCustomTransformers: () => ({ before: [styledComponentsTransformer] }),
+                        },
+                    },
+                ],
             },
             /** allows us to import SVG's are React Components */
             {
@@ -84,8 +108,8 @@ module.exports = (env, argv) => {
          */
         config.performance = {
             hints: 'error',
-            maxAssetSize: 3800000,
-            maxEntrypointSize: 3800000,
+            maxAssetSize: 3900000,
+            maxEntrypointSize: 3900000,
         };
     }
 
@@ -98,8 +122,8 @@ module.exports = (env, argv) => {
          */
         config.performance = {
             hints: 'error',
-            maxAssetSize: 140000,
-            maxEntrypointSize: 140000,
+            maxAssetSize: 200000,
+            maxEntrypointSize: 200000,
         };
     }
 

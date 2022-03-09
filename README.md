@@ -3,7 +3,10 @@
 My current favourite frontend build options :)
 
 ## Setup for Development (vs code)
-1. add `Prettier - Code formatter` extension
+1. Recommended extentions to install
+    - vscode-styled-components (Diego Lincoln version) -> gives intellisense and syntax highlighting to styled components
+    - Prettier - Code formatter -> to run the autoformatting
+    - GitLens — Git supercharged -> helps track down changes in the code
 
 ## Coding best practices
 
