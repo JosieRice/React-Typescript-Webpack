@@ -7,11 +7,16 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // common build options
 var config = {
     // where to start compiling code
-    entry: path.join(__dirname, "src", "App.tsx"),
+    entry: path.join(__dirname, "src", "index.tsx"),
     // where compiled code goes
     output: { 
+        // base path for everything in this build
+        publicPath: '/',
+        // directory build goes to
         path: path.join(__dirname, "build"), 
+        // output file name into above dir
         filename: "index.[contenthash].bundle.js",
+        // on fresh builds, delete everything in the build folder first
         clean: true,
     },
     // for deciding between development or production builds (passed as --mode production in webpack cli)
@@ -55,14 +60,16 @@ module.exports = (env, argv) => {
         config.devtool = 'inline-source-map';
         // tells dev server that it needs to serve everything from the src folder
         config.devServer = { static: path.join(__dirname, "src") };
+        // redirects 404's to /index.html (so react-router can take over) on the dev server
+        config.devServer.historyApiFallback = true;
         /**
          * test all files to make sure they're not over the max size set
          * this isn't a hard limit, but it's here so that we know when the bundle grows and can analyse what happened and if we're okay with the increase
          */
         config.performance = {
             hints: 'error',
-            maxAssetSize: 3500000,
-            maxEntrypointSize: 3500000,
+            maxAssetSize: 3800000,
+            maxEntrypointSize: 3800000,
         }
     }
     // production specific build options
