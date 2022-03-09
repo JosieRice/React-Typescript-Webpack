@@ -24,6 +24,13 @@ var config = {
     mode: process.env.NODE_ENV || 'development',
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        /**
+         * alias is used to avoid always using relative imports
+         * must have matching paths rules in tsconfig.json for Typescript to not complain
+         */
+        alias: {
+            routes: path.resolve(__dirname, 'src/routes'),
+        },
     },
     module: {
         /** Note: rules run from bottom to top, because... reasons. */

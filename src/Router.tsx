@@ -1,6 +1,6 @@
-import { Routes, Route } from 'react-router-dom';
-import Signin from './routes/signin/Index';
-import Home from './routes/home/Index';
+import { Route, Routes } from 'react-router-dom';
+import Home from 'routes/home/Index';
+import Signin from 'routes/signin/Index';
 import NotFound from './NotFound';
 
 const Router = () => {
