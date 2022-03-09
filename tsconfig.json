@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "paths": {
+            "icons/*": ["./src/assets/icons/*"],
             "routes/*": ["./src/routes/*"]
         },
         "target": "es5",

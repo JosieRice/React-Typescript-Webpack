@@ -29,6 +29,7 @@ var config = {
          * must have matching paths rules in tsconfig.json for Typescript to not complain
          */
         alias: {
+            icons: path.resolve(__dirname, 'src/assets/icons'),
             routes: path.resolve(__dirname, 'src/routes'),
         },
     },
@@ -47,6 +48,12 @@ var config = {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: ['ts-loader'],
+            },
+            /** allows us to import SVG's are React Components */
+            {
+                test: /\.svg$/i,
+                issuer: /\.tsx?$/,
+                use: ['@svgr/webpack'],
             },
         ],
     },

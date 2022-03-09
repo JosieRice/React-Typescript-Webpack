@@ -10,6 +10,7 @@ My current favourite frontend build options :)
 - new files should be formatted to Spaces: 4
 - `Shift + Option + F` on files before committing (to run prettier auto formatting)
 - `Shift + Option + O` on files before committing (to alphabetise imports)
+- it's rare that a typescript type is `any`, so if you've added one of those or a `// @ts-ignore`, take a moment to propery type it or verify that it is actualy an `any` type
 
 ## To Run Locally
 
