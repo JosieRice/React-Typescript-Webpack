@@ -5,6 +5,12 @@ My current favourite frontend build options :)
 ## Setup for Development (vs code)
 1. add `Prettier - Code formatter` extension
 
+## Coding best practices
+
+- new files should be formatted to Spaces: 4
+- `Shift + Option + F` on files before committing (to run prettier auto formatting)
+- `Shift + Option + O` on files before committing (to alphabetise imports)
+
 ## To Run Locally
 
 1. clone repo

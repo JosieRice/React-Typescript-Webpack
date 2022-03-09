@@ -1,39 +1,41 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-// uncomment and run a build to get an analysis of your bundles :)
+/** uncomment and run a build to get an analysis of your bundles :) */
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-// common build options
+/** common build options */
 var config = {
-    // where to start compiling code
+    /** where to start/entry point for compiling code */
     entry: path.join(__dirname, 'src', 'index.tsx'),
-    // where compiled code goes
+    /** where compiled code goes */
     output: {
-        // base path for everything in this build
+        /** base path for everything in this build */
         publicPath: '/',
-        // directory build goes to
+        /** directory build goes to */
         path: path.join(__dirname, 'build'),
-        // output file name into above dir
+        /** output file name into above dir */
         filename: 'index.[contenthash].bundle.js',
-        // on fresh builds, delete everything in the build folder first
+        /** on fresh builds, delete everything in the build folder first */
         clean: true,
     },
-    // for deciding between development or production builds (passed as --mode production in webpack cli)
+
+    /** for deciding between development or production builds (passed as --mode production in webpack cli) */
     mode: process.env.NODE_ENV || 'development',
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
     module: {
-        // Note: rules run from bottom to top, because... reasons.
+        /** Note: rules run from bottom to top, because... reasons. */
         rules: [
-            // run js and jsx files through babel as defined in .babelrc
+            /** run js and jsx files through babel as defined in .babelrc */
+            // Chloë: I'm not convinced this is necessary
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: ['babel-loader'],
             },
-            // run ts and tsx files through ts-loader
+            /** run ts and tsx files through ts-loader */
             {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
@@ -42,25 +44,25 @@ var config = {
         ],
     },
     plugins: [
-        // inject index.bundle.js into index.html file
+        /** inject index.bundle.js into index.html file */
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src', 'index.html'),
         }),
-        // move typescript type check until after build (will get important quickly as codebase grows)
+        /** move typescript type check until after build (will get important quickly as codebase grows) */
         new ForkTsCheckerWebpackPlugin(),
-        // uncomment and run a build to get an analysis of your bundles :)
+        /** uncomment and run a build to get an analysis of your bundles :) */
         // new BundleAnalyzerPlugin(),
     ],
 };
 
 module.exports = (env, argv) => {
-    // development specific build options
+    /** development specific build options */
     if (argv.mode === 'development') {
-        // adding recommended source mapping to dev build
+        /** adding recommended source mapping to dev build */
         config.devtool = 'inline-source-map';
-        // tells dev server that it needs to serve everything from the src folder
+        /** tells dev server that it needs to serve everything from the src folder */
         config.devServer = { static: path.join(__dirname, 'src') };
-        // redirects 404's to /index.html (so react-router can take over) on the dev server
+        /** redirects 404's to /index.html (so react-router can take over) on the dev server */
         config.devServer.historyApiFallback = true;
         /**
          * test all files to make sure they're not over the max size set
@@ -72,7 +74,8 @@ module.exports = (env, argv) => {
             maxEntrypointSize: 3800000,
         };
     }
-    // production specific build options
+
+    /** production specific build options */
     if (argv.mode === 'production') {
         config.devtool = 'source-map';
         /**
