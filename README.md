@@ -20,4 +20,9 @@ My current favourite frontend build options :)
 1. clone repo
 2. navigate to the repo's root directory in a terminal
 3. run `npm i` in terminal
-4. run `npm run dev` in terminal for dev build OR `npm run prod` to build production bundles for deploy
+4. run `npm run dev` in terminal
+
+## To Run a Production build
+
+1. navigate to the repo's root directory in a terminal
+2. run `npm run prod` in terminal

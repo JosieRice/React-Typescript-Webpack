@@ -32,11 +32,24 @@ const config = {
         /** directory build goes to */
         path: path.join(__dirname, 'build'),
         /** output file name into above dir */
-        filename: 'index.[contenthash].bundle.js',
+        filename: '[name].[contenthash].bundle.js',
         /** on fresh builds, delete everything in the build folder first */
         clean: true,
     },
-
+    optimization: {
+        splitChunks: {
+            /** DO NOT ADD TO THIS BUNDLE: manually makes a vender chunk for react, react-dom, and styled-components */
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/](react|react-dom|styled-components)[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all',
+                },
+            },
+            /** dynamically splits the rest of the code into separate bundles based on webpack defaults */
+            chunks: 'all',
+        },
+    },
     /** for deciding between development or production builds (passed as --mode production in webpack cli) */
     mode: process.env.NODE_ENV || 'development',
     resolve: {
@@ -103,27 +116,27 @@ module.exports = (env, argv) => {
         /** redirects 404's to /index.html (so react-router can take over) on the dev server */
         config.devServer.historyApiFallback = true;
         /**
-         * test all files to make sure they're not over the max size set
-         * this isn't a hard limit, but it's here so that we know when the bundle grows and can analyse what happened and if we're okay with the increase
+         * Keep these asset and entry point sizes around 5500000
+         * adds a warning to dev builds when bundles are getting large
+         * ideally this would line up with the production build, but that's impossible with the differences in dev and prod builds
          */
         config.performance = {
-            hints: 'error',
-            maxAssetSize: 3900000,
-            maxEntrypointSize: 3900000,
+            hints: 'warning',
+            maxAssetSize: 5500000,
+            maxEntrypointSize: 5500000,
         };
     }
 
     /** production specific build options */
     if (argv.mode === 'production') {
         config.devtool = 'source-map';
-        /**
-         * test all files to make sure they're not over the max size set
-         * this isn't a hard limit, but it's here so that we know when the bundle grows and can analyse what happened and if we're okay with the increase
-         */
+        /** upgrades the default webpack warnings to errors that will kill the build */
         config.performance = {
             hints: 'error',
-            maxAssetSize: 200000,
-            maxEntrypointSize: 200000,
+            /** doesn't check the vendor bundles size, it's cool, don't even trip dawg */
+            assetFilter: function assetFilter(assetFilename) {
+                return !/^vendor/.test(assetFilename);
+            },
         };
     }
 
