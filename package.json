@@ -1,11 +1,13 @@
 {
   "name": "react-typescript-webpack",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "My current favourite frontend build options :)",
   "main": "index.js",
   "scripts": {
+    "clean-install": "rm -rf node_modules && npm i",
     "dev": "webpack serve --mode development",
-    "prod": "webpack --mode production"
+    "prod": "webpack --mode production",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -25,14 +27,20 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@svgr/webpack": "^6.2.1",
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^13.0.0",
+    "@types/jest": "^27.4.1",
     "@types/react-dom": "^17.0.14",
     "@types/styled-components": "^5.1.24",
     "babel-loader": "^8.2.4",
     "babel-plugin-styled-components": "^2.0.6",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.5.1",
+    "msw": "^0.39.2",
     "path": "^0.12.7",
     "ts-loader": "^9.2.8",
+    "ts-node": "^10.7.0",
     "typescript-plugin-styled-components": "^2.0.0",
     "webpack": "^5.70.0",
     "webpack-bundle-analyzer": "^4.5.0",
