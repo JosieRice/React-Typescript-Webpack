@@ -1,18 +1,19 @@
 import { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import Router from './Router';
 import init from './init';
+import Router from './Router';
 
 /** everything that should be initialized globally on load goes here */
 init();
 
 /** global react entry point for wrappers that affect the whole app */
-ReactDOM.render(
+const container = document.getElementById('root')!;
+const root = createRoot(container);
+root.render(
     <StrictMode>
         <BrowserRouter>
             <Router />
         </BrowserRouter>
-    </StrictMode>,
-    document.getElementById('root')
+    </StrictMode>
 );
